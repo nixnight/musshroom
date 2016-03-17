@@ -1,0 +1,5 @@
+[user]
+	email = musshroom@nowhere.com
+	name = musshroom
+[push]
+	default = simple
