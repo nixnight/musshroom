@@ -78,10 +78,18 @@
 					<execution>
 						<id>server-onejar</id>
 						<configuration>
-							<mainClass>e.s.Shell</mainClass>
+							<mainClass>musshroom.server.Main</mainClass>
 							<filename>musshroom-server.jar</filename>
 							<attachToBuild>true</attachToBuild>
 							<classifier>executable</classifier>
+							<binlibs>
+                                <fileSet>
+                                    <directory>${project.basedir}/../lib/linux_x64</directory>
+                                    <includes>
+                                        <include>libopus.so</include>
+                                    </includes>
+                                </fileSet>
+                            </binlibs>
 						</configuration>
 						<goals>
 							<goal>one-jar</goal>

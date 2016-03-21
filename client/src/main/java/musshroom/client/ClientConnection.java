@@ -58,7 +58,7 @@ public class ClientConnection implements Runnable, IConnection {
 		try {
 			LOG.debug("connect..");
 			sshcon.connect();
-			LOG.debug("connected.");
+			LOG.info("connected.");
 			connected = true;
 			// start listening
 			LOG.debug("listen packets...");

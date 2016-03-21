@@ -38,7 +38,7 @@
 				<version>1.4.4</version>
 				<executions>
 					<execution>
-						<id>server-onejar</id>
+						<id>client-onejar</id>
 						<configuration>
 							<mainClass>musshroom.client.Main</mainClass>
 							<filename>musshroom-client.jar</filename>
@@ -82,7 +82,7 @@
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk15on</artifactId>
-			<version>1.50</version>
+			<version>1.54</version>
 		</dependency>
 	</dependencies>
 </project>

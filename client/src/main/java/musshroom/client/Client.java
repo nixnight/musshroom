@@ -16,11 +16,12 @@ import musshroom.common.audio.RingBuffer;
 import musshroom.common.io.DataInputStream.Buffer;
 import musshroom.common.io.DataType;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Client implements Runnable, IDataCallback {
 	private final static Logger LOG = LoggerFactory.getLogger(Client.class);
@@ -89,7 +90,7 @@ public class Client implements Runnable, IDataCallback {
 					Thread.sleep(5000);
 				} else {
 					connected = false;
-					LOG.debug("not connected : wait.");
+					//LOG.debug("not connected : wait."); do not log since we may ask password right now..
 					Thread.sleep(1000);
 					// TODO count #failed and rebuild TCP connection
 				}

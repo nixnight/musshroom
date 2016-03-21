@@ -19,11 +19,12 @@ import opus.OpusLibrary;
 import opus.OpusLibrary.OpusEncoder;
 
 import org.bridj.Pointer;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import portaudio.PortaudioLibrary.PaErrorCode;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ConnectionHandler implements Runnable {
 	private final static Logger LOG = LoggerFactory.getLogger(ConnectionHandler.class);
@@ -103,6 +104,7 @@ public class ConnectionHandler implements Runnable {
 				// exit thread (close connection)
 				return;
 			}
+
 			LOG.debug("User [{}] connected", userId);
 			//
 			LOG.info("wait packet");

@@ -12,8 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ConfigRepository;
+import com.jcraft.jsch.Hacky;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.OpenSSHConfig;
 import com.jcraft.jsch.Session;
 
 /**
@@ -23,14 +26,14 @@ public class SshConnection {
 	private final static Logger LOG = LoggerFactory.getLogger(SshConnection.class);
 	private File idFile;
 	private String hostname;
-	private String passphrase;
+	private char[] passphrase;
 	private String username;
 	private int sshPort;
 	private DataInputStream input;
 	private DataOutputStream output;
 	private Channel shellChannel;
 
-	public SshConnection(String hostname, int sshPort, String username, File idFile, String passphrase) {
+	public SshConnection(String hostname, int sshPort, String username, File idFile, char[] passphrase) {
 		this.hostname = hostname;
 		this.sshPort = sshPort;
 		this.username = username;
@@ -40,10 +43,39 @@ public class SshConnection {
 
 	public void connect() throws JSchException, IOException {
 		JSch jsch = new JSch();
-		jsch.addIdentity(idFile.getAbsolutePath());
+		// read SSH config
+		File sshDir = new File(new File(System.getProperty("user.home")), ".ssh");
+		File config = new File(sshDir, "config");
+		if (config.exists()) {
+			LOG.debug("Load SSH config file [{}]", config.getAbsolutePath());
+			ConfigRepository configRepository = OpenSSHConfig.parseFile(config.getAbsolutePath());
+			jsch.setConfigRepository(configRepository);
+		}
+		//
 		LOG.debug("Connect [{}@{}:{}]", username, hostname, sshPort);
 		Session session = jsch.getSession(username, hostname, sshPort);
-		session.setUserInfo(new SshUserInfo(passphrase));
+		Hacky.hacky(session, username);
+		session.setUserInfo(new SshUserInfo(passphrase, idFile));
+		// something does not work when ServerAliveInterval is set in ssh
+		// config file so we clear it there
+		session.setServerAliveInterval(0);
+		// add local key found in ~/.ssh
+		if (idFile == null) {
+			for (File f : sshDir.listFiles()) {
+				if (f.getName().endsWith(".pub")) {
+					// public key found -> check if private key available
+					String abs = f.getAbsolutePath();
+					File privkey = new File(abs.substring(0, abs.length() - 4));
+					if (privkey.exists()) {
+						jsch.addIdentity(privkey.getAbsolutePath());
+					}
+				}
+			}
+		} else {
+			// only key specified by user
+			jsch.addIdentity(idFile.getAbsolutePath());
+		}
+		// connect
 		session.connect();
 		//
 		shellChannel = session.openChannel("shell");

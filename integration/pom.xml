@@ -38,7 +38,7 @@
 				<version>1.4.4</version>
 				<executions>
 					<execution>
-						<id>server-onejar</id>
+						<id>integration-onejar</id>
 						<configuration>
 							<mainClass>demo.DemoServer</mainClass>
 							<filename>musshroom-integration.jar</filename>

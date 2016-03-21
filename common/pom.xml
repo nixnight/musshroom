@@ -24,6 +24,21 @@
 		<version>2.0</version>
 	</parent>
 
+	<repositories>
+		<repository>
+			<!-- local repository for external dependencies -->
+			<id>lib-repo</id>
+			<releases>
+				<enabled>true</enabled>
+				<checksumPolicy>ignore</checksumPolicy>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<url>file://${project.basedir}/../lib/repository</url>
+		</repository>
+	</repositories>
+
 	<build>
 		<resources>
 			<resource>
@@ -32,7 +47,6 @@
 			</resource>
 		</resources>
 		<plugins>
-
 		</plugins>
 	</build>
 
@@ -71,35 +85,34 @@
 			<artifactId>opus</artifactId>
 			<version>1.1rc3</version>
 		</dependency>
-
 		<!-- jsch : SSH in java -->
 		<dependency>
 			<groupId>com.jcraft</groupId>
 			<artifactId>jsch</artifactId>
-			<version>0.1.51</version>
+			<version>0.1.53</version>
 		</dependency>
 		<dependency>
 			<!-- needed for base64 -->
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.9</version>
+			<version>1.10</version>
+		</dependency>
+		<dependency>
+			<!-- needed for base64 -->
+			<groupId>commons-cli</groupId>
+			<artifactId>commons-cli</artifactId>
+			<version>1.3.1</version>
 		</dependency>
 		<dependency>
 			<!-- for message serialisation -->
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>1.9.13</version>
-		</dependency>
-		<dependency>
-			<groupId>org.zeromq</groupId>
-			<artifactId>jeromq</artifactId>
-			<version>0.3.4</version>
-		</dependency>
-		<!-- BrideJ : java to native dynamic binding -->
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.7.3</version>
+		</dependency>		<!-- BrideJ : java to native dynamic binding -->
 		<dependency>
 			<groupId>com.nativelibs4java</groupId>
 			<artifactId>bridj</artifactId>
-			<version>0.6.2</version>
+			<version>0.7.1</version>
 			<scope>compile</scope>
 		</dependency>
 		<!-- Generated portaudio-BridJ glue code -->
